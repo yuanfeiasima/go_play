@@ -96,33 +96,37 @@ func (server *CenterServer) broadcast(params string) error {
 	return nil
 }
 
-func (server *CenterServer)Handle(method, params string) *ipc.Response {
+func (server *CenterServer) Handle(method, params string) *ipc.Response {
 
 	switch method {
 	case "addPlayer":
 		err := server.addPlayer(params)
 		if err != nil {
-			return &ipc.Response{Code:err.Error()}
+			return &ipc.Response{Code: err.Error()}
 		}
 	case "removePlayer":
 		err := server.removePlayer(params)
 		if err != nil {
-			return &ipc.Response{Code:err.Error()}
+			return &ipc.Response{Code: err.Error()}
 		}
 	case "listPlayer":
 		players, err := server.listPlayer(params)
 		if err != nil {
-			return &ipc.Response{Code:err.Error()}
+			return &ipc.Response{Code: err.Error()}
 		}
 		return ipc.Response{"200", players}
 	case "broadCast":
 		err := server.broadcast(params)
 		if err != nil {
-			return &ipc.Response{Code:err.Error()}
+			return &ipc.Response{Code: err.Error()}
 		}
-		return &ipc.Response{Code:"200"}
+		return &ipc.Response{Code: "200"}
 	default:
-		return &
+		return &ipc.Response{Code: "404", Body: method + ":" + params}
 	}
+	return ipc.Response{Code: "200"}
+}
 
+func (server *CenterServer) Name() string {
+	return "CenterServer"
 }
