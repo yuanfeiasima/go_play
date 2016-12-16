@@ -10,7 +10,6 @@ import (
 	//"github.com/go-sql-driver/mysql"
 	"mathapp/db"
 	//"database/sql"
-	"encoding/asn1"
 )
 
 func getuser(w http.ResponseWriter, r *http.Request) {

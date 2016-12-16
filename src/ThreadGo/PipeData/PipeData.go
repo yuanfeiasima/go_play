@@ -1,6 +1,9 @@
 package ThreadGo
 
-import "fmt"
+import (
+	"fmt"
+	"runtime"
+)
 
 //管道流
 type PipeData struct {
@@ -30,3 +33,20 @@ func Parse(ch <-chan int) {
 		fmt.Println("Parse value", value)
 	}
 }
+
+//关闭
+func chanIsClose(ch chan int){
+	_, ok := <-ch
+	if !ok {
+		fmt.Println("chan close")
+	}
+
+}
+
+func GetCpuNUm(){
+	cpu_num := runtime.NumCPU()//获取cpu核心数
+	fmt.Println("cpu核心数：", cpu_num)
+	runtime.GOMAXPROCS(cpu_num)
+
+}
+
