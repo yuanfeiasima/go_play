@@ -3,7 +3,6 @@ package cg
 import (
 	"encoding/json"
 	"errors"
-	"github.com/drone/routes/exp/context"
 	"qipai/ipc"
 	"sync"
 )
