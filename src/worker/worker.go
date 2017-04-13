@@ -137,7 +137,7 @@ func initialize() {
 func main() {
 	//初始化对象池
 	initialize()
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 5; i++ {
 		p := Payload{
 			fmt.Sprintf("玩家-[%s]", strconv.Itoa(i)),
 		}
