@@ -60,6 +60,7 @@ func (w *Worker) Start() {
 			case job := <-w.JobChannel:
 				fmt.Printf("[%s] 工人接收到了任务 当前任务长度是[%d] \n", w.name, len(w.WorkerPool))
 				job.Payload.Play()
+				DoneQueue <- w.name + "工人处理完任务了"
 				time.Sleep(time.Duration(rand.Int31n(1000)) * time.Microsecond)
 			//接收到任务
 			case <-w.quit:
@@ -104,6 +105,9 @@ func (d *Dispatcher) Run() {
 
 }
 
+//任务队列
+var DoneQueue chan string
+
 func (d *Dispatcher) dispatch() {
 
 	for {
@@ -117,7 +121,9 @@ func (d *Dispatcher) dispatch() {
 				jobChannel := <-d.WorkerPool
 				jobChannel <- job
 			}(job)
-		default:
+		case  result := <- DoneQueue:
+			fmt.Println(result)
+		//default:
 		//fmt.Println("ok!!")
 		}
 
@@ -131,6 +137,7 @@ func initialize() {
 	//初始化一个调试者,并指定它可以操作的 工人个数
 	dispatch := NewDispatcher(maxWorkers)
 	JobQueue = make(chan Job, maxQueue)
+	DoneQueue = make(chan string)
 	//并让它一直运行
 	dispatch.Run()
 }
